@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download {{ filename }}</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    color: #00ff88;
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.filename {
+    color: #a0a0a0;
+    font-size: 1.1em;
+    word-break: break-word;
+}
+
+.ad-space {
+    background: #222;
+    border: 2px dashed #333;
+    border-radius: 10px;
+    padding: 60px 20px;
+    text-align: center;
+    color: #666;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.download-section {
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+    margin: 30px 0;
+}
+
+.wait-message {
+    font-size: 1.3em;
+    color: #00ff88;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+#countdown {
+    font-size: 4em;
+    font-weight: bold;
+    color: #00ff88;
+    margin: 30px 0;
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+    transition: all 0.3s ease;
+}
+
+#countdown.pulse {
+    transform: scale(1.1);
+}
+
+.download-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+    color: #0a0a0a;
+    padding: 18px 50px;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 25px rgba(0, 255, 136, 0.3);
+    border: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.download-btn.active {
+    cursor: pointer;
+    opacity: 1;
+    animation: glow 2s infinite;
+}
+
+.download-btn.active:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 35px rgba(0, 255, 136, 0.5);
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 5px 25px rgba(0, 255, 136, 0.3);
+    }
+    50% {
+        box-shadow: 0 5px 35px rgba(0, 255, 136, 0.6);
+    }
+}
+
+.info-text {
+    color: #888;
+    font-size: 0.95em;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+    #countdown {
+        font-size: 3em;
+    }
+    .download-section {
+        padding: 30px 20px;
+    }
+    .download-btn {
+        display: block;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 15px 20px;
+        font-size: 1.1em;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📥 Ready to Download</h1>
+        <p class="filename">{{ filename }}</p>
+        {% if file_size and file_size != 'Unknown' %}
+        <p style="color:#666;margin-top:8px;font-size:0.9em;">Size: {{ file_size }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Ad Space 1 -->
+    <div class="">
+       <script src="https://fpyf8.com/88/tag.min.js" data-zone="178152" async data-cfasync="false"></script>
+    </div>
+
+    <!-- Download Section -->
+    <div class="download-section">
+        <p class="wait-message">Please wait <span id="countdownText">5</span> seconds before downloading...</p>
+        
+        <div id="countdown">5</div>
+        
+        <a id="downloadBtn" href="{{ download_url }}" class="download-btn">
+            Download {{ filename }}
+        </a>
+        
+        <p class="info-text" id="infoText">Preparing your download...</p>
+    </div>
+
+    <!-- Ad Space 2 -->
+    <div class="ad-space">
+       <!-- Your second ad or promo content -->
+       <a href="https://t.me/lagoswebdev" target="_blank" 
+   style="display: block; 
+          background: linear-gradient(145deg, #000000 0%, #1a1a1a 50%, #2d2d2d 100%); 
+          color: white; 
+          padding: 30px 35px; 
+          text-align: center; 
+          border-radius: 12px; 
+          text-decoration: none; 
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+          width: 90%; 
+          max-width: 380px; 
+          margin: 0 auto;
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          position: relative;
+          overflow: hidden;
+          border: 1px solid rgba(255, 255, 255, 0.08);">
+   
+   <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+               background: radial-gradient(circle at 30% 20%, rgba(229, 9, 20, 0.1) 0%, transparent 60%);
+               pointer-events: none;"></div>
+   
+   <h3 style="margin: 0 0 5px 0; 
+              font-size: 12px; 
+              font-weight: 500;
+              letter-spacing: 1.5px;
+              text-transform: uppercase;
+              opacity: 0.6;
+              color: #999;">LAGOSWEBDEV</h3>
+   
+   <h2 style="margin: 15px 0 20px 0; 
+              font-size: 32px; 
+              font-weight: 700;
+              line-height: 1.1;
+              color: #ffffff;
+              font-family: -apple-system, BlinkMacSystemFont, sans-serif;">Need a Pro Website?</h2>
+   
+   <p style="margin: 0 0 25px 0;
+             font-size: 16px;
+             opacity: 0.8;
+             font-weight: 400;
+             color: #cccccc;
+             line-height: 1.4;">Let's build your dream website today!</p>
+   
+   <button style="background: linear-gradient(90deg, #e50914, #b20710); 
+                  color: white; 
+                  border: none; 
+                  padding: 14px 28px; 
+                  border-radius: 4px; 
+                  font-weight: 600;
+                  font-size: 16px;
+                  margin: 20px 0; 
+                  cursor: pointer;
+                  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+                  transition: all 0.2s ease;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 10px;
+                  font-family: inherit;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+         <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+      </svg>
+      Chat Now
+   </button>
+   
+   <div style="margin: 15px 0 0 0; 
+               border-top: 1px solid rgba(255, 255, 255, 0.1);
+               padding-top: 15px;">
+      <p style="margin: 0 0 8px 0; 
+                font-size: 14px;
+                opacity: 0.9;
+                font-weight: 500;
+                color: #ffffff;">Chat on Telegram, Twitter</p>
+      <p style="margin: 0 0 8px 0; 
+                font-size: 15px;
+                opacity: 1;
+                font-weight: 700;
+                color: #ffffff;">@lagoswebdev</p>
+      <p style="margin: 0; 
+                font-size: 13px;
+                opacity: 0.7;
+                font-weight: 400;
+                color: #cccccc;">www.lagoswebdev.com</p>
+   </div>
+</a>
+    </div>
+</div>
+
+<script>
+let counter = 5;
+const countdownEl = document.getElementById('countdown');
+const countdownText = document.getElementById('countdownText');
+const btn = document.getElementById('downloadBtn');
+const infoText = document.getElementById('infoText');
+const waitMessage = document.querySelector('.wait-message');
+
+btn.addEventListener('click', function(e) {
+    if (!btn.classList.contains('active')) {
+        e.preventDefault();
+        countdownEl.classList.add('pulse');
+        setTimeout(() => countdownEl.classList.remove('pulse'), 300);
+    }
+});
+
+const interval = setInterval(() => {
+    counter--;
+    if(counter > 0){
+        countdownEl.textContent = counter;
+        countdownText.textContent = counter;
+        countdownEl.classList.add('pulse');
+        setTimeout(() => countdownEl.classList.remove('pulse'), 300);
+    } else {
+        clearInterval(interval);
+        countdownEl.style.display = 'none';
+        waitMessage.style.display = 'none';
+        btn.classList.add('active');
+        infoText.textContent = '✓ Click the button below to start your download';
+        infoText.style.color = '#00ff88';
+    }
+}, 1000);
+</script>
+</body>
+</html>

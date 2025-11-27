@@ -278,6 +278,8 @@ def submit():
         "generated_link": generated_link
     })
 
+from flask import render_template  # Add this at the top if not imported
+
 @app.route('/download-page/<id>')
 def download_page(id):
     conn = sqlite3.connect(DB_PATH)
@@ -289,120 +291,15 @@ def download_page(id):
         return "File not found", 404
 
     filename, file_size = row
-    if not file_size:
+    if not file_size or file_size == "Unknown":
         file_size = "Unknown size"
+    
     download_url = f"{BASE_URL}/download/{id}"
 
-    return f'''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Download - {filename}</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            body {{
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background: #f8f9fa;
-                margin: 0;
-                padding: 20px;
-                text-align: center;
-            }}
-            .container {{
-                max-width: 600px;
-                margin: 40px auto;
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-                padding: 30px;
-            }}
-            h1 {{
-                color: #2c3e50;
-                margin-bottom: 20px;
-            }}
-            .file-info {{
-                background: #f1f8ff;
-                padding: 15px;
-                border-radius: 8px;
-                margin: 20px 0;
-                text-align: left;
-            }}
-            .ad-banner {{
-                margin: 25px 0;
-                padding: 15px;
-                background: #fff8e1;
-                border: 1px dashed #ffc107;
-                border-radius: 8px;
-                font-size: 14px;
-                color: #5f5f5f;
-            }}
-            .btn {{
-                display: inline-block;
-                margin-top: 20px;
-                padding: 14px 32px;
-                background: #43a047;
-                color: white;
-                text-decoration: none;
-                border-radius: 6px;
-                font-size: 18px;
-                font-weight: bold;
-                transition: background 0.3s;
-            }}
-            .btn:hover {{
-                background: #388e3c;
-            }}
-            .countdown {{
-                margin: 15px 0;
-                color: #666;
-                font-size: 16px;
-            }}
-            .skip {{
-                color: #1a73e8;
-                text-decoration: none;
-                font-size: 14px;
-                margin-top: 10px;
-                display: inline-block;
-            }}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>🎬 Ready to Download</h1>
-            
-            <div class="file-info">
-                <strong>{filename}</strong><br>
-                Size: {file_size}
-            </div>
-
-            <!-- AD SPACE - Replace with your ad code -->
-            <div class="ad-banner">
-                [Advertisement - 300x250 or responsive]
-                <!-- Example: Google AdSense code goes here -->
-            </div>
-
-            <div class="countdown">Your download will start in <span id="timer">5</span> seconds...</div>
-            <a href="{download_url}" id="downloadBtn" class="btn">⬇️ Download Now</a>
-            <div class="skip">
-                <a href="{download_url}">Skip wait</a>
-            </div>
-        </div>
-
-        <script>
-            let seconds = 5;
-            const timerEl = document.getElementById('timer');
-            const downloadBtn = document.getElementById('downloadBtn');
-
-            const countdown = setInterval(() => {{
-                seconds--;
-                timerEl.textContent = seconds;
-                if (seconds <= 0) {{
-                    clearInterval(countdown);
-                }}
-            }}, 1000);
-        </script>
-    </body>
-    </html>
-    '''
+    return render_template('download_page.html', 
+                         filename=filename, 
+                         file_size=file_size, 
+                         download_url=download_url)
 
 @app.route('/download/<id>')
 def download(id):
