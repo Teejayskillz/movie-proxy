@@ -14,7 +14,7 @@ import re
 CACHE_DIR = 'cache'
 CACHE_TTL_SECONDS = 7 * 24 * 3600  # 7 days
 DB_PATH = 'downloads.db'
-BASE_URL = 'http://localhost:5000'
+BASE_URL = 'https://proxy.jaraflix.com'
 
 app = Flask(__name__)
 
@@ -120,7 +120,7 @@ def home():
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Movie Proxy</title>
+    <title>JARAFLIX Movie Proxy</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -188,7 +188,7 @@ def home():
     </style>
 </head>
 <body>
-    <h1>🎥 Movie Proxy</h1>
+    <h1>🎥 JARAFLIX Movie Proxy</h1>
     <form id="submitForm">
         <div class="form-group">
             <label for="url">Source URL (e.g. WildShare)</label>
