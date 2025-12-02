@@ -62,39 +62,42 @@ def clean_old_cache():
 
 def generate_id(length=6):
     return secrets.token_hex(length // 2)[:length]
-
 def get_wildshare_download_link(source_url: str) -> tuple[str, dict, str]:
-    """
-    Returns: (download_url, cookies, file_size)
-    """
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        context = browser.new_context()
+        browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--single-process"
+            ]
+        )
+        context = browser.new_context(
+            extra_http_headers={
+                "Referer": "https://wildshare.net/",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+        )
         page = context.new_page()
 
-        page.set_extra_http_headers({
-            "Referer": "https://wildshare.net/",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        })
-
-        print(f"[Scraping] Loading info page: {source_url}")
+        # Step 1: Load info page
+        print(f"[Scraping] Loading info page: {source_size}")
         page.goto(source_url)
         page.wait_for_load_state("networkidle")
 
-        # Extract file size from page: "Size: (126.26 MB)"
+        # Extract file size
         file_size = "Unknown"
         try:
-            page_content = page.content()
-            # Match pattern: Size: (126.26 MB)
-            size_match = re.search(r'Size:\s*$(\d+(?:\.\d+)?\s*(?:[MKG]B))', page_content, re.IGNORECASE)
+            content = page.content()
+            size_match = re.search(r'Size:\s*\(([\d.]+\s*[MKG]B)\)', content, re.IGNORECASE)
             if size_match:
                 file_size = size_match.group(1)
         except Exception as e:
-            print(f"[Scraping] Failed to extract size: {e}")
+            print(f"[Scraping] Size extraction failed: {e}")
 
-        print(f"[Scraping] File size: {file_size}")
-
-        # Extract pt URL
+        # Step 2: Get pt URL
         button = page.query_selector("span.wildbutton")
         if not button:
             browser.close()
@@ -103,15 +106,24 @@ def get_wildshare_download_link(source_url: str) -> tuple[str, dict, str]:
         match = re.search(r"window\.location\s*=\s*['\"]([^'\"]+)['\"]", onclick)
         if not match:
             browser.close()
-            raise Exception("Could not extract URL")
+            raise Exception("Could not extract pt URL")
         pt_url = match.group(1)
-        print(f"[Scraping] Final download URL extracted: {pt_url}")
+        print(f"[Scraping] Navigating to pt URL: {pt_url}")
+
+        # Step 3: Go to pt URL and wait for final redirect
+        page2 = context.new_page()
+        page2.goto(pt_url, wait_until="domcontentloaded", timeout=30000)
+        
+        # Wait for possible JS redirect
+        time.sleep(3)
+        final_url = page2.url
+        print(f"[Scraping] Final URL after redirect: {final_url}")
 
         cookies = context.cookies()
         cookie_dict = {c['name']: c['value'] for c in cookies}
 
         browser.close()
-        return pt_url, cookie_dict, file_size
+        return final_url, cookie_dict, file_size
 
 # === Routes ===
 @app.route('/')
